@@ -1,0 +1,52 @@
+2026-10-26 09:06:55,804 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 09:06:56,272 - gui.interface - INFO - MCM Cobalt Tablo GUI initialized
+2026-10-26 10:10:45,635 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 10:10:46,341 - gui.interface - INFO - MCM Cobalt Tablo with Digital Dashboard initialized
+2026-10-26 10:14:16,268 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 10:14:16,763 - gui.interface - INFO - MCM Cobalt Tablo with Digital Dashboard initialized
+2026-10-26 10:14:23,937 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 10:14:24,399 - gui.interface - INFO - MCM Cobalt Tablo with Digital Dashboard initialized
+2026-10-26 10:17:05,740 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 10:17:06,267 - gui.interface - INFO - MCM Cobalt Tablo with Digital Dashboard initialized
+2026-10-26 10:41:24,959 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 10:41:26,234 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 10:41:26,234 - root - ERROR - Fatal error: 'MCMCobaltApp' object has no attribute 'run'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\Cobalt MCM Tablo\main.py", line 38, in main
+    return app.run()
+           ^^^^^^^
+AttributeError: 'MCMCobaltApp' object has no attribute 'run'
+2026-10-26 10:48:30,556 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 10:48:31,266 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 10:58:36,172 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 10:58:36,670 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 11:03:26,071 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:03:35,469 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:04:46,171 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:04:54,325 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:05:01,035 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:05:06,338 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:05:06,712 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 11:30:43,295 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:30:43,709 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 11:31:18,218 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:31:18,629 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 11:32:12,845 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:32:13,331 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 11:34:17,086 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:34:17,093 - root - ERROR - Fatal error: unterminated string literal (detected at line 272) (interface.py, line 272)
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\Cobalt MCM Tablo\main.py", line 35, in main
+    from gui.interface import MCMCobaltApp
+  File "C:\Users\user\Desktop\Cobalt MCM Tablo\gui\interface.py", line 272
+    line([pp(-46, -10), pp(-18, -hw + 3), pp(40, -hw * 0.55)], w=1.2, fill="#3d3
+                                                                           ^
+SyntaxError: unterminated string literal (detected at line 272)
+2026-10-26 11:39:48,688 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:39:49,107 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 11:52:21,531 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:52:21,995 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 11:53:44,849 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:53:45,232 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
+2026-10-26 11:56:16,799 - root - INFO - MCM Cobalt Tablo application started
+2026-10-26 11:56:17,218 - gui.interface - INFO - Cobalt MCM Tablo GUI initialized successfully.
