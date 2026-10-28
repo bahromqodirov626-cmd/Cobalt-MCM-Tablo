@@ -498,6 +498,7 @@ class MCMCobaltApp:
             ("stock", "▤", "Stock Faylni Yuklash", "Zavod faylini tanlash", SOFT, self._on_stock_file),
             ("rec", "⟲", "MCM Recovery Bajarish", "Modulni qayta tiklash", ERR, self._on_mcm_recovery),
             ("ipc", "⇩", "IPC ga Yozish (Write IPC)", "Asboblar paneliga yozish", ACCENT, self._on_write_ipc),
+            ("wake", "◉", "Tablo Uyg'otish", "Aloqani faollashtirish (TesterPresent)", OK, self._on_wake),
         ]:
             b = ActionButton(sec, icon, title, sub, color, cmd, self.ui)
             b.pack(fill="x", pady=3)
@@ -521,7 +522,8 @@ class MCMCobaltApp:
         strip.grid(row=2, column=0, sticky="ew", pady=(8, 0))
         self.tiles = {}
         for i, (key, name) in enumerate([("speed", "TEZLIK"), ("rpm", "AYLANISH"), ("gear", "UZATMA"),
-                                         ("odo", "KILOMETRAJ"), ("batt", "AKB")]):
+                                         ("odo", "KILOMETRAJ"), ("coolant", "SUV HARORATI"),
+                                         ("batt", "AKB")]):
             strip.grid_columnconfigure(i, weight=1, uniform="t")
             tile = tk.Frame(strip, bg=PANEL, highlightthickness=1, highlightbackground=LINE)
             tile.grid(row=0, column=i, sticky="ew", padx=(0 if i == 0 else 6, 0))
@@ -582,9 +584,9 @@ class MCMCobaltApp:
         except tk.TclError:
             pass
 
-    def update_cluster(self, speed=None, rpm=None, gear=None, odo=None, brake=None, lights=None):
+    def update_cluster(self, speed=None, rpm=None, gear=None, odo=None, brake=None, lights=None, coolant=None):
         if not self._in_main():
-            self.run_ui(self.update_cluster, speed, rpm, gear, odo, brake, lights)
+            self.run_ui(self.update_cluster, speed, rpm, gear, odo, brake, lights, coolant)
             return
         c = self.cluster
         if speed is not None:
@@ -605,6 +607,8 @@ class MCMCobaltApp:
         self.tiles["gear"].configure(text=c.gear)
         self.tiles["odo"].configure(text=f"{c.odo} km")
         self.tiles["batt"].configure(text="12.6 V" if self._connected else "— V")
+        if coolant is not None:
+            self.tiles["coolant"].configure(text=f"{int(coolant)} °C")
 
     def redraw(self):
         self.cluster.redraw()
@@ -705,8 +709,7 @@ class MCMCobaltApp:
         ctx.update(extra)
         return ctx
 
-    def _invoke(self, fn, **extra):
-        ctx = self._context(**extra)
+    def _invoke(self, fn, ctx):
         try:
             params = inspect.signature(fn).parameters
         except (TypeError, ValueError):
@@ -727,11 +730,12 @@ class MCMCobaltApp:
             self.log("Boshqa amal bajarilmoqda, kuting...", "warn")
             return
         self._set_busy(True)
+        ctx = self._context(**extra)  # Tk o'zgaruvchilarini faqat asosiy oqimda o'qiymiz
 
         def worker():
             res, err = None, None
             try:
-                res = self._invoke(fn, **extra)
+                res = self._invoke(fn, ctx)
             except Exception as e:
                 logger.exception("%s xatosi", title)
                 err = e
@@ -770,7 +774,7 @@ class MCMCobaltApp:
                 except Exception:
                     data = None
                 if isinstance(data, dict):
-                    allowed = ("speed", "rpm", "gear", "odo", "brake", "lights")
+                    allowed = ("speed", "rpm", "gear", "odo", "brake", "lights", "coolant")
                     self.run_ui(self.update_cluster, **{k: v for k, v in data.items() if k in allowed})
                 self._live_stop.wait(0.3)
 
@@ -836,6 +840,23 @@ class MCMCobaltApp:
             return
         self.log("VIN o'qish so'rovi yuborildi (DEMO).", "tx")
         self.vin_value.set("3G1234567890ABCDE")
+
+    def _on_wake(self):
+        kind, fn = self._resolve("wake", "tester_present")
+        if kind == "callback":
+            self._legacy(fn)
+            return
+        if kind == "backend":
+            if not self._need_connection():
+                return
+            self.log("Tablo uyg'otish so'rovi yuborildi...", "tx")
+            self._run_task("Tablo uyg'otish", fn, on_done=self._after_wake)
+            return
+        self.log("Tablo uyg'otish so'rovi yuborildi (DEMO).", "tx")
+
+    def _after_wake(self, res):
+        ok = bool(res[0]) if isinstance(res, tuple) else bool(res)
+        self.log("Tablo javob berdi." if ok else "Tablo javob bermadi.", "ok" if ok else "warn")
 
     def _after_read_vin(self, res):
         vin = str(res or "").strip().upper()
@@ -913,7 +934,7 @@ class MCMCobaltApp:
             fn = getattr(self.backend, "disconnect", None) if self.backend is not None else None
             if callable(fn):
                 try:
-                    self._invoke(fn)
+                    self._invoke(fn, self._context())
                 except Exception:
                     logger.exception("Yopishda disconnect xatosi")
         self.root.destroy()
