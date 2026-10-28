@@ -7,7 +7,7 @@ Provides functions for CAN bus communication at 500kbps.
 
 import ctypes
 import logging
-from ctypes import c_uint32, c_uint8, POINTER, Structure, c_char_p
+from ctypes import c_uint32, c_uint8, Structure, c_char_p
 from typing import Optional, List, Tuple
 from enum import IntEnum
 

@@ -5,7 +5,7 @@ Utility functions for hex-string conversions, CRC checks, and configuration byte
 """
 
 import logging
-from typing import List, Tuple, Optional
+from typing import List, Tuple
 import struct
 import zlib
 
